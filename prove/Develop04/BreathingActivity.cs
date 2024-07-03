@@ -1,26 +1,34 @@
 using System;
+using System.Threading;
 
-public class BreathingActivity : Activity
+public class BreathingActivity : BaseActivity
 {
-    public BreathingActivity()
+    private const string Description = "This activity will help you relax by walking you through breathing in and out slowly. Clear your mind and focus on your breathing.";
+    public BreathingActivity() : base("Breathing")
     {
-        _name = "Breathing";
-        _description = "This activity will help you relax by walking your through breathing in and out slowly. Clear your mind and focus on your breathing.";
+        //Can add extra things if needed here now.
     }
 
-    public override void Run()
+    protected override void DisplayStartingMessage()
     {
-        DisplayStartingMessage();
-        DateTime endTime = DateTime.Now.AddSeconds(_duration);
+        Console.WriteLine(Description);
+        Console.WriteLine($"Duration of activity: {Duration} seconds.");
+        Console.WriteLine("Prepare to begin...");
+        Thread.Sleep(2000);
+    }
 
-        while (DateTime.Now < endTime)
+    protected override void PerformActivity()
+    {
+        for (int i = 0; i < Duration; i++)
         {
-            Console.WriteLine("Breathe in...");
-            ShowCountDown(3);
-            Console.WriteLine("Breathe out...");
-            ShowCountDown(3);
+            Console.WriteLine(i % 2 == 0 ? "Breathe in..." : "Breathe out...");
+            Thread.Sleep(1000); 
         }
-
-        DisplayEndingMessage();
     }
+
+    protected override void DisplayEndingMessage()
+    {
+         Console.WriteLine($"Good job! You've completed the {ActivityName} Activity for {Duration} seconds.");
+    }
+    
 }

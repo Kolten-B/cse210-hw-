@@ -4,39 +4,62 @@ class Program
 {
     static void Main(string[] args)
     {
-         bool running = true;
-
-        while (running)
+        while (true)
         {
-            Console.WriteLine("Mindfulness Program");
+            Console.WriteLine("Welcome to the Mindfulness Program");
+            Console.WriteLine("Choose an activity:");
             Console.WriteLine("1. Breathing Activity");
             Console.WriteLine("2. Reflecting Activity");
             Console.WriteLine("3. Listing Activity");
             Console.WriteLine("4. Quit");
-            Console.Write("Choose an option: ");
             int choice = int.Parse(Console.ReadLine());
 
             switch (choice)
             {
                 case 1:
-                    BreathingActivity breathingActivity = new BreathingActivity();
-                    breathingActivity.Run();
+                    RunBreathingActivity();
                     break;
                 case 2:
-                    ReflectingActivity reflectingActivity = new ReflectingActivity();
-                    reflectingActivity.Run();
+                    RunReflectionActivity();
                     break;
                 case 3:
-                    ListingActivity listingActivity = new ListingActivity();
-                    listingActivity.Run();
+                    RunListingActivity();
                     break;
                 case 4:
-                    running = false;
-                    break;
+                    Console.WriteLine("Exiting the program...");
+                    return;
                 default:
                     Console.WriteLine("Invalid choice. Please choose again.");
                     break;
             }
         }
+    }
+
+    static void RunBreathingActivity()
+    {
+        BreathingActivity breathingActivity = new BreathingActivity();
+        SetDuration(breathingActivity);
+        breathingActivity.StartActivity();
+    }
+
+    static void RunReflectionActivity()
+    {
+        ReflectingActivity reflectionActivity = new ReflectingActivity();
+        SetDuration(reflectionActivity);
+        reflectionActivity.StartActivity();
+    }
+
+    static void RunListingActivity()
+    {
+        ListingActivity listingActivity = new ListingActivity();
+        SetDuration(listingActivity);
+        listingActivity.StartActivity();
+    }
+
+    static void SetDuration(BaseActivity activity)
+    {
+        Console.Write("Enter duration in seconds: ");
+        int duration = int.Parse(Console.ReadLine());
+        activity.Duration = duration;
     }
 }

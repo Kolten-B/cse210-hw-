@@ -1,67 +1,53 @@
 using System;
-using System.Collections.Generic;
+using System.Threading;
 
-public class ReflectingActivity : Activity
+public class ReflectingActivity : BaseActivity
 {
-    private List<string> _prompts;
-    private List<string> _questions;
-
-    public ReflectingActivity()
+        private static readonly string[] Prompts = {
+        "Think of a time when you stood up for someone else.",
+        "Think of a time when you did something really difficult.",
+        "Think of a time when you helped someone in need.",
+        "Think of a time when you did something truly selfless."
+        };
+          private static readonly string[] Questions = {
+        "Why was this experience meaningful to you?",
+        "Have you ever done anything like this before?",
+        "How did you get started?",
+        "How did you feel when it was complete?",
+        "What made this time different than other times when you were not as successful?",
+        "What is your favorite thing about this experience?",
+        "What could you learn from this experience that applies to other situations?",
+        "What did you learn about yourself through this experience?",
+        "How can you keep this experience in mind in the future?"
+        };
+    
+    public ReflectingActivity() : base("Reflecting")
     {
-        _name = "Reflecting";
-        _description = "This activity will help you reflect on times in your life when you have shown strength and resilience. This will help you recognize the power you have and how you can use it in other aspects of your life.";
-
-        _prompts = new List<string>
-        {
-            "Think of a time when you stood up for someone else.",
-            "Think of a time when you did something really difficult.",
-            "Think of a time when you helped someone in need.",
-            "Think of a time when you did something truly selfless."
-        };
-
-        _questions = new List<string>
-        {
-            "Why was this experience meaningful to you?",
-            "Have you ever done anything like this before?",
-            "How did you get started?",
-            "How did you feel when it was complete?",
-            "What made this time different than other times when you were not as successful?",
-            "What is your favorite thing about this experience?",
-            "What could you learn from this experience that applies to other situations?",
-            "What did you learn about yourself through this experience?",
-            "How can you keep this experience in mind in the future?"
-        };
+        // Additional setup to Reflecting Activity if needed
     }
 
-    public override void Run()
+    protected override void DisplayStartingMessage()
     {
-        DisplayStartingMessage();
-        DateTime endTime = DateTime.Now.AddSeconds(_duration);
+        Console.WriteLine("Prepare for reflection...");
+        Console.WriteLine($"Duration of activity: {Duration} seconds.");
+        Thread.Sleep(2000); 
+    }
 
-        string prompt = GetRandomPrompt();
-        Console.WriteLine(prompt);
+    protected override void PerformActivity()
+    {
+        Random random = new Random();
+        string prompt = Prompts[random.Next(Prompts.Length)];
+        Console.WriteLine($"Prompt: {prompt}");
 
-        while (DateTime.Now < endTime)
+        foreach (string question in Questions)
         {
-            string question = GetRandomQuestion();
             Console.WriteLine(question);
-            ShowSpinner(5);
+            Thread.Sleep(3000); 
         }
-
-        DisplayEndingMessage();
     }
 
-    private string GetRandomPrompt()
+    protected override void DisplayEndingMessage()
     {
-        Random rand = new Random();
-        int index = rand.Next(_prompts.Count);
-        return _prompts[index];
-    }
-
-    private string GetRandomQuestion()
-    {
-        Random rand = new Random();
-        int index = rand.Next(_questions.Count);
-        return _questions[index];
+        Console.WriteLine($"Well done! You've completed the {ActivityName} Activity for {Duration} seconds.");
     }
 }

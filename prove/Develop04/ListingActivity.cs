@@ -1,58 +1,40 @@
 using System;
-using System.Collections.Generic;
+using System.Threading;
 
-public class ListingActivity : Activity
+public class ListingActivity : BaseActivity
 {
-    private List<string> _prompts;
+    private static readonly string[] Prompts = {
+        "Who are people that you appreciate?",
+        "What are personal strengths of yours?",
+        "Who are people that you have helped this week?",
+        "When have you felt at peace recently?",
+        "Who are some of your personal heroes?"
+    };
 
-    public ListingActivity()
+    public ListingActivity() : base("Listing")
     {
-        _name = "Listing";
-        _description = "This activity will help you reflect on the good things in your life by having you list as many things as you can in a certain area.";
-
-        _prompts = new List<string>
-        {
-            "Who are people that you appreciate?",
-            "What are personal strengths of yours?",
-            "Who are people that you have helped this week?",
-            "When have you felt the Holy Ghost this month?",
-            "Who are some of your personal heroes?"
-        };
+        // Additional setup to Listing Activity if needed
     }
 
-    public override void Run()
+    protected override void DisplayStartingMessage()
     {
-        DisplayStartingMessage();
-        string prompt = GetRandomPrompt();
-        Console.WriteLine(prompt);
-
-        ShowCountDown(3);
-
-        List<string> items = GetListFromUser();
-        Console.WriteLine($"You listed {items.Count} items.");
-
-        DisplayEndingMessage();
+        Console.WriteLine("Prepare for listing...");
+        Console.WriteLine($"Duration of activity: {Duration} seconds.");
+        Thread.Sleep(2000); 
     }
 
-    private string GetRandomPrompt()
+    protected override void PerformActivity()
     {
-        Random rand = new Random();
-        int index = rand.Next(_prompts.Count);
-        return _prompts[index];
+        Random random = new Random();
+        string prompt = Prompts[random.Next(Prompts.Length)];
+        Console.WriteLine($"Prompt: {prompt}");
+        Thread.Sleep(5000); 
+        int itemsCount = random.Next(5, 10); 
+        Console.WriteLine($"You listed {itemsCount} items.");
     }
 
-    private List<string> GetListFromUser()
+    protected override void DisplayEndingMessage()
     {
-        List<string> items = new List<string>();
-        DateTime endTime = DateTime.Now.AddSeconds(_duration);
-
-        while (DateTime.Now < endTime)
-        {
-            Console.Write("Enter item: ");
-            string item = Console.ReadLine();
-            items.Add(item);
-        }
-
-        return items;
+        Console.WriteLine($"Great job! You've completed the {ActivityName} Activity for {Duration} seconds.");
     }
 }
