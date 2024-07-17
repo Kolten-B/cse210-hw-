@@ -1,9 +1,14 @@
 using System;
 
-class Program
+namespace TaskManagerApp
 {
-    static void Main(string[] args)
+    class Program
     {
-        Console.WriteLine("Hello Foundation4 World!");
+        static void Main(string[] args)
+        {
+            TaskManager taskManager = new TaskManager();
+            UserInterface ui = new UserInterface(taskManager);
+            ui.DisplayMenu();
+        }
     }
 }
